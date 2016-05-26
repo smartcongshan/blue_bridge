@@ -1,0 +1,198 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        05/21/2016  20:24:14  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+F:\MKD\C51\BIN\BL51.EXE uart.obj TO uart RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  uart.obj (UART)
+  F:\MKD\C51\LIB\C51S.LIB (?C_STARTUP)
+  F:\MKD\C51\LIB\C51S.LIB (PRINTF)
+  F:\MKD\C51\LIB\C51S.LIB (?C?CLDPTR)
+  F:\MKD\C51\LIB\C51S.LIB (?C?CLDOPTR)
+  F:\MKD\C51\LIB\C51S.LIB (?C?CSTPTR)
+  F:\MKD\C51\LIB\C51S.LIB (?C?PLDIIDATA)
+  F:\MKD\C51\LIB\C51S.LIB (?C?CCASE)
+  F:\MKD\C51\LIB\C51S.LIB (PUTCHAR)
+
+
+LINK MAP OF MODULE:  uart (UART)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0014H     UNIT         _DATA_GROUP_
+                    001CH     0004H                  *** GAP ***
+            BIT     0020H.0   0001H.1   UNIT         _BIT_GROUP_
+                    0021H.1   0000H.7                *** GAP ***
+            IDATA   0022H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     035CH     UNIT         ?PR?PRINTF?PRINTF
+            CODE    035FH     008EH     UNIT         ?C?LIB_CODE
+            CODE    03EDH     0027H     UNIT         ?PR?PUTCHAR?PUTCHAR
+            CODE    0414H     0020H     UNIT         ?PR?_DELAY?UART
+            CODE    0434H     0018H     UNIT         ?PR?UART_INIT?UART
+            CODE    044CH     0018H     UNIT         ?PR?MAIN?UART
+            CODE    0464H     000DH     UNIT         ?PR?BUZZER_OFF?UART
+            CODE    0471H     000CH     UNIT         ?C_C51STARTUP
+            CODE    047DH     0005H     UNIT         ?CO?UART
+
+
+
+OVERLAY MAP OF MODULE:   uart (UART)
+
+
+SEGMENT                           BIT_GROUP          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH     START    LENGTH
+------------------------------------------------------------------
+?C_C51STARTUP                  -----    -----      -----    -----
+  +--> ?PR?MAIN?UART
+
+?PR?MAIN?UART                  -----    -----      -----    -----
+  +--> ?PR?BUZZER_OFF?UART
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2016  20:24:14  PAGE 2
+
+
+  +--> ?PR?UART_INIT?UART
+  +--> ?CO?UART
+  +--> ?PR?PRINTF?PRINTF
+  +--> ?PR?_DELAY?UART
+
+?PR?PRINTF?PRINTF              0020H.0  0001H.1    0008H    0014H
+  +--> ?PR?PUTCHAR?PUTCHAR
+
+
+
+SYMBOL TABLE OF MODULE:  uart (UART)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        UART
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:00C0H         PUBLIC        P4
+  D:00C8H         PUBLIC        P5
+  B:00A8H.7       PUBLIC        EA
+  D:00E8H         PUBLIC        P6
+  D:00F8H         PUBLIC        P7
+  D:00A8H         PUBLIC        IE
+  C:0414H         PUBLIC        _delay
+  B:00A8H.4       PUBLIC        ES
+  D:00B8H         PUBLIC        IP
+  B:0098H.1       PUBLIC        TI
+  D:00D8H         PUBLIC        CCON
+  C:044CH         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:008EH         PUBLIC        AUXR
+  C:0464H         PUBLIC        buzzer_off
+  D:008DH         PUBLIC        TH1
+  D:008BH         PUBLIC        TL1
+  C:0434H         PUBLIC        uart_init
+  B:0088H.6       PUBLIC        TR1
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        z
+  -------         DO            
+  D:0006H         SYMBOL        x
+  D:0004H         SYMBOL        y
+  -------         ENDDO         
+  C:0414H         LINE#         8
+  C:0414H         LINE#         9
+  C:0414H         LINE#         11
+  C:041FH         LINE#         12
+  C:0433H         LINE#         13
+  -------         ENDPROC       _DELAY
+  -------         PROC          BUZZER_OFF
+  C:0464H         LINE#         16
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2016  20:24:14  PAGE 3
+
+
+  C:0464H         LINE#         17
+  C:0464H         LINE#         18
+  C:0467H         LINE#         19
+  C:046AH         LINE#         20
+  C:046DH         LINE#         21
+  C:0470H         LINE#         22
+  -------         ENDPROC       BUZZER_OFF
+  -------         PROC          UART_INIT
+  C:0434H         LINE#         25
+  C:0434H         LINE#         26
+  C:0434H         LINE#         27
+  C:0437H         LINE#         28
+  C:043AH         LINE#         29
+  C:043DH         LINE#         30
+  C:0440H         LINE#         31
+  C:0443H         LINE#         32
+  C:0445H         LINE#         33
+  C:0447H         LINE#         34
+  C:0449H         LINE#         35
+  C:044BH         LINE#         37
+  -------         ENDPROC       UART_INIT
+  -------         PROC          MAIN
+  C:044CH         LINE#         39
+  C:044CH         LINE#         40
+  C:044CH         LINE#         41
+  C:044FH         LINE#         42
+  C:0452H         LINE#         43
+  C:0452H         LINE#         44
+  C:0452H         LINE#         45
+  C:045BH         LINE#         46
+  C:0462H         LINE#         47
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        UART
+
+  -------         MODULE        PRINTF
+  D:0008H         PUBLIC        ?_PRINTF517?BYTE
+  D:0008H         PUBLIC        ?_PRINTF?BYTE
+  D:0008H         PUBLIC        ?_SPRINTF517?BYTE
+  D:0008H         PUBLIC        ?_SPRINTF?BYTE
+  C:0065H         PUBLIC        _PRINTF
+  C:0065H         PUBLIC        _PRINTF517
+  C:005FH         PUBLIC        _SPRINTF
+  C:005FH         PUBLIC        _SPRINTF517
+  -------         ENDMOD        PRINTF
+
+  -------         MODULE        ?C?CLDPTR
+  C:035FH         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+  -------         MODULE        ?C?CLDOPTR
+  C:0378H         PUBLIC        ?C?CLDOPTR
+  -------         ENDMOD        ?C?CLDOPTR
+
+  -------         MODULE        ?C?CSTPTR
+  C:03A5H         PUBLIC        ?C?CSTPTR
+  -------         ENDMOD        ?C?CSTPTR
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2016  20:24:14  PAGE 4
+
+
+  -------         MODULE        ?C?PLDIIDATA
+  C:03B7H         PUBLIC        ?C?PLDIIDATA
+  -------         ENDMOD        ?C?PLDIIDATA
+
+  -------         MODULE        ?C?CCASE
+  C:03C7H         PUBLIC        ?C?CCASE
+  -------         ENDMOD        ?C?CCASE
+
+  -------         MODULE        PUTCHAR
+  C:03EDH         PUBLIC        _PUTCHAR
+  -------         ENDMOD        PUTCHAR
+
+Program Size: data=30.1 xdata=0 code=1154
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

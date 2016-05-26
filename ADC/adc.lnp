@@ -1,0 +1,4 @@
+"adc.obj",
+"iic.obj" 
+TO "adc" 
+RAMSIZE(256) 

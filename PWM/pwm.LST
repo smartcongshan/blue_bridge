@@ -1,0 +1,64 @@
+C51 COMPILER V9.01   PWM                                                                   05/23/2016 20:07:14 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE PWM
+OBJECT MODULE PLACED IN pwm.OBJ
+COMPILER INVOKED BY: F:\MKD\C51\BIN\C51.EXE pwm.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include "stc15f2k60s2.h"
+   2          
+   3          void buzzer_off(void)
+   4          {
+   5   1          P2 &= 0x0;
+   6   1          P2  = 0xa0;
+   7   1          P0 &= 0x0;
+   8   1          P2 &= 0x1f;
+   9   1      }
+  10          
+  11          void pwm_init(void)
+  12          {
+  13   1          ACC = P_SW1;
+  14   1          ACC &= ~(0x10 | 0x20);
+  15   1          P_SW1 = ACC;
+  16   1          CCON = 0;
+  17   1          CL = 0;
+  18   1          CH = 0;
+  19   1          CMOD = 0x02;
+  20   1      }
+  21          
+  22          void pwm_zhankongbi(unsigned int zhan)
+  23          {
+  24   1          PCA_PWM0 = 0x00;
+  25   1          CCAP0H = CCAP0L = 0x20;
+  26   1          CCAPM0 = 0x42;
+  27   1          
+  28   1      }
+*** WARNING C280 IN LINE 22 OF PWM.C: 'zhan': unreferenced local variable
+  29          
+  30          void main()
+  31          {
+  32   1          buzzer_off();
+  33   1          pwm_init();
+  34   1          CR = 1;
+  35   1        while(1)
+  36   1        {
+  37   2            pwm_zhankongbi();
+*** WARNING C209 IN LINE 37 OF PWM.C: '_pwm_zhankongbi': too few actual parameters
+  38   2        }
+  39   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     60    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,4 @@
+"Fahrenheit.obj",
+"onewire.obj" 
+TO "Fahrenheit" 
+RAMSIZE(256) 

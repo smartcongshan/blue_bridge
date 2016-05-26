@@ -1,0 +1,316 @@
+C51 COMPILER V9.01   AT24C02                                                               05/22/2016 20:03:39 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE AT24C02
+OBJECT MODULE PLACED IN AT24C02.OBJ
+COMPILER INVOKED BY: F:\MKD\C51\BIN\C51.EXE AT24C02.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include "stc15f2k60s2.h"
+   2          #include "iic.h"
+   3          #include <stdio.h>
+   4          
+   5          typedef unsigned char uchar;
+   6          typedef unsigned int uint;
+   7          #define FOSC  11059200
+   8          #define T1MS  (65536 - (FOSC/1000))
+   9          #define BUAD  115200
+  10          
+  11          uchar du[] = { 0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};
+  12          int t,write;
+  13          unsigned char cnt;
+  14          
+  15          /* ???? */
+  16          void delay(int z)
+  17          {
+  18   1        while(z--);
+  19   1      }
+  20          
+  21          /* ????? */
+  22          void buzzer_off(void)
+  23          {
+  24   1          P2 &= 0x0;
+  25   1          P2  = 0xa0;
+  26   1          P0 &= 0x0;
+  27   1          P2 &= 0x1f;
+  28   1      } 
+  29          
+  30          /* ?? */
+  31          void duan(int x)
+  32          {
+  33   1          P2 &= 0x0; 
+  34   1          P2  = 0xe0;
+  35   1          P0 |= 0xff;
+  36   1          P0  = du[x];
+  37   1          P2 &= 0x1f;
+  38   1      }
+  39          
+  40          /* ?? */
+  41          void wei(int x)
+  42          {
+  43   1          x = 7 - x;
+  44   1          P2 &= 0x0;
+  45   1          P2  = 0xc0;
+  46   1          P0 &= 0x0;
+  47   1          P0 |= (1<<x);
+  48   1          P2 &= 0x1f;
+  49   1          P0 &= 0x00;
+  50   1      }
+  51          
+  52          /* ??????? */
+  53          
+  54          void display(long int x)
+  55          {
+C51 COMPILER V9.01   AT24C02                                                               05/22/2016 20:03:39 PAGE 2   
+
+  56   1          int i;
+  57   1          int k = 1;
+  58   1          for(i = 0;i < 8;i++)
+  59   1          {
+  60   2              wei(i);
+  61   2              duan(x%10);
+  62   2              delay(20);
+  63   2              x = x/10;
+  64   2          }
+  65   1      }
+  66          void start()
+  67          {
+  68   1             SDA=1;
+  69   1               SCL=1; 
+  70   1           delay(5);
+  71   1           SDA=0;
+  72   1           delay(5);
+  73   1      }
+  74          
+  75          void stop()
+  76          {
+  77   1           SDA=0;
+  78   1               SCL=1;
+  79   1           delay(5);
+  80   1           SDA=1;
+  81   1           delay(5);
+  82   1      }
+  83          
+  84          void respon()
+  85          {
+  86   1              uchar i;
+  87   1          SCL=1;
+  88   1        //  delay(5);
+  89   1          while((SDA==1)&&(i<250))
+  90   1          {
+  91   2              i++;
+  92   2          }
+  93   1          SCL=0;
+  94   1          delay(5);
+  95   1      }
+  96          
+  97          void write_byte(uchar date)
+  98          {
+  99   1           uchar i;
+ 100   1           for(i=0;i<8;i++)
+ 101   1           {
+ 102   2                 SCL=0;   
+ 103   2               delay(5);
+ 104   2               SDA=date&0x80;
+ 105   2               delay(5);
+ 106   2               SCL=1;
+ 107   2               date<<=1;
+ 108   2               delay(5);
+ 109   2           }
+ 110   1           SCL=0;
+ 111   1           SDA=1;
+ 112   1           delay(5);
+ 113   1      
+ 114   1      }
+ 115          
+ 116          uchar read_byte()
+ 117          {
+C51 COMPILER V9.01   AT24C02                                                               05/22/2016 20:03:39 PAGE 3   
+
+ 118   1               uchar i,bb;
+ 119   1           for(i=0;i<8;i++)
+ 120   1           {
+ 121   2                  SCL=1;
+ 122   2              bb<<=1;
+ 123   2              delay(5);
+ 124   2              if(SDA==1)
+ 125   2              {
+ 126   3                    bb|=0x01;
+ 127   3              }
+ 128   2              else
+ 129   2              {
+ 130   3                    bb|=0x00;
+ 131   3              }
+ 132   2              delay(5);
+ 133   2              SCL=0;
+ 134   2              delay(5);
+ 135   2           }
+ 136   1           return bb;
+ 137   1      }
+ 138          void write_date(uchar address,date)
+ 139          {
+ 140   1                start();
+ 141   1            write_byte(0xa0);
+ 142   1            respon();
+ 143   1            write_byte(address);
+ 144   1            respon();
+ 145   1            write_byte(date);
+ 146   1            respon();
+ 147   1            stop();
+ 148   1      }
+ 149          
+ 150          uint read_date(uchar address)
+ 151          {
+ 152   1                uint cc;
+ 153   1            start();
+ 154   1            write_byte(0xa0);
+ 155   1            respon();
+ 156   1            write_byte(address);
+ 157   1            respon();
+ 158   1            start();
+ 159   1            write_byte(0xa1);
+ 160   1            respon();
+ 161   1            cc=read_byte();
+ 162   1            stop();
+ 163   1            return cc;
+ 164   1      }
+ 165          
+ 166          //void operate_delay(unsigned char t)
+ 167          //{
+ 168          //  unsigned char i;
+ 169          //  
+ 170          //  while(t--){
+ 171          //    for(i=0; i<112; i++);
+ 172          //  }
+ 173          //}
+ 174          
+ 175          ///* 写eeprom */
+ 176          //void write_eeprom(unsigned char add,unsigned char val)
+ 177          //{
+ 178          //   IIC_Start();
+ 179          //    IIC_SendByte(0xa0);
+C51 COMPILER V9.01   AT24C02                                                               05/22/2016 20:03:39 PAGE 4   
+
+ 180          //    IIC_WaitAck();
+ 181          //    IIC_SendByte(add);
+ 182          //    IIC_WaitAck();
+ 183          //    IIC_SendByte(val);
+ 184          //    IIC_WaitAck();
+ 185          //    IIC_Stop();
+ 186          //  //operate_delay(10);
+ 187          //}
+ 188          ///* 读eeprom */
+ 189          //unsigned char read_eeprom(unsigned char add)
+ 190          //{
+ 191          //    unsigned char ret;
+ 192          //  
+ 193          //    IIC_Start();
+ 194          //    IIC_SendByte(0Xa0);
+ 195          //    IIC_WaitAck();
+ 196          //    IIC_SendByte(add);
+ 197          //    IIC_Start();
+ 198          //    IIC_SendByte(0xa1);
+ 199          //    IIC_WaitAck();
+ 200          //    ret = IIC_RecByte();
+ 201          //    //IIC_Ack(1);
+ 202          //    IIC_Stop();
+ 203          //    return ret;
+ 204          //}
+ 205          
+ 206          /* 定时器0初始化 */
+ 207          void timer0_init(void)
+ 208          {
+ 209   1        
+ 210   1          AUXR |= 0x80;
+ 211   1          TMOD = 0X00;
+ 212   1          TH0  = T1MS>>8;
+ 213   1          TL0  = T1MS;
+ 214   1          //EA   = 1;
+ 215   1          ET0  = 1;
+ 216   1          TR0  = 1;
+ 217   1          
+ 218   1      }
+ 219          void uart_init(void)
+ 220          {
+ 221   1          SCON = 0x50;
+ 222   1          AUXR = 0x40;
+ 223   1          TMOD = 0x00;
+ 224   1          TL1  = (65536 - (FOSC/4/BUAD));
+ 225   1          TH1  = (65536 - (FOSC/4/BUAD))>>8;
+ 226   1          EA   = 1;
+ 227   1          ES   = 1;
+ 228   1          TR1  = 1;
+ 229   1          //REN  = 1;
+ 230   1      }
+ 231          void main()
+ 232          {
+ 233   1          unsigned char x = 0;
+ 234   1          uart_init();  
+ 235   1          buzzer_off();
+ 236   1          timer0_init();
+ 237   1          //init();
+ 238   1      
+ 239   1          write_date(2,x);
+ 240   1          delay(10);
+ 241   1          cnt = read_date(2);
+C51 COMPILER V9.01   AT24C02                                                               05/22/2016 20:03:39 PAGE 5   
+
+ 242   1      //    if(cnt > 50)
+ 243   1      //    {
+ 244   1      //        cnt = 0;
+ 245   1      //    }
+ 246   1          while(1)
+ 247   1          { 
+ 248   2              //printf("%d\n",cnt);
+ 249   2              
+ 250   2              //delay(10);
+ 251   2              display(cnt);
+ 252   2                if(write == 1)
+ 253   2                {
+ 254   3                  write = 0;
+ 255   3                  write_date(2,cnt);
+ 256   3                }   
+ 257   2          }
+ 258   1          
+ 259   1      }
+ 260          void timer0(void) interrupt 1
+ 261          {
+ 262   1          t++;
+ 263   1          if(t == 1000)
+ 264   1          {
+ 265   2              t = 0;
+ 266   2              cnt++;
+ 267   2              write = 1;
+ 268   2              if(cnt > 100)
+ 269   2                cnt = 0;
+ 270   2          }
+ 271   1      }
+ 272          void uart1(void)interrupt 4
+ 273          {
+ 274   1        if(RI)
+ 275   1        {
+ 276   2          
+ 277   2          RI = 0;
+ 278   2          
+ 279   2        }
+ 280   1        if(TI)
+ 281   1        {
+ 282   2          TI = 0;
+ 283   2        
+ 284   2        }
+ 285   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    548    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     15       9
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

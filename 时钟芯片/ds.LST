@@ -1,0 +1,123 @@
+C51 COMPILER V9.01   DS                                                                    05/22/2016 12:03:20 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE DS
+OBJECT MODULE PLACED IN ds.OBJ
+COMPILER INVOKED BY: F:\MKD\C51\BIN\C51.EXE ds.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include "stc15f2k60s2.h"
+   2          #include "ds1302.h"
+   3          
+   4          code unsigned char du[] = { 0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};
+   5          
+   6          unsigned char sec,hr,min;
+   7          unsigned int second,hour,minute;
+   8          unsigned long int dis;
+   9          
+  10          /* 延时函数 */
+  11          void delay(int z)
+  12          {
+  13   1          int x,y;
+  14   1          for(x = z ;x >0 ;x--)
+  15   1            for(y = 110;y > 0;y--);
+  16   1      }
+  17          
+  18          /* 关闭蜂鸣器 */
+  19          void buzzer_off(void)
+  20          {
+  21   1          P2 &= 0x0;
+  22   1          P2  = 0xa0;
+  23   1          P0 &= 0x0;
+  24   1          P2 &= 0x1f;
+  25   1      } 
+  26          
+  27          /* 段选 */
+  28          void duan(int x)
+  29          {
+  30   1          P2 &= 0x0; 
+  31   1          P2  = 0xe0;
+  32   1          P0 |= 0xff;
+  33   1          P0  = du[x];
+  34   1          P2 &= 0x1f;
+  35   1      }
+  36          
+  37          /* 位选 */
+  38          void wei(int x)
+  39          {
+  40   1          x = 7 - x;
+  41   1          P2 &= 0x0;
+  42   1          P2  = 0xc0;
+  43   1          P0 &= 0x0;
+  44   1          P0 |= (1<<x);
+  45   1          P2 &= 0x1f;
+  46   1          P0 &= 0x00;
+  47   1      }
+  48          
+  49          /* 显示函数 */
+  50          
+  51          void display(long int x)
+  52          {
+  53   1          int i;
+  54   1          int k = 1;
+  55   1          for(i = 0;i < 8;i++)
+C51 COMPILER V9.01   DS                                                                    05/22/2016 12:03:20 PAGE 2   
+
+  56   1          {
+  57   2              wei(i);
+  58   2              duan(x%10);
+  59   2              delay(20);
+  60   2              x = x/10;
+  61   2          }
+  62   1      }
+  63          /* 时钟芯片的初始化 */
+  64          void ds1302_init(void)
+  65          {
+  66   1          Ds1302_Single_Byte_Write(0x8e,0x00);
+  67   1          Ds1302_Single_Byte_Write(ds1302_sec_addr,(0));
+  68   1          Ds1302_Single_Byte_Write(ds1302_min_addr,((58/10)<<4)|(58%10));
+  69   1          Ds1302_Single_Byte_Write(ds1302_hr_addr ,((11/10)<<4)|(11%10));
+  70   1          Ds1302_Single_Byte_Write(0x8e,0x80);
+  71   1        
+  72   1      }
+  73          
+  74          /* 时钟芯片读取函数 */
+  75          void ds1302_rd(void)
+  76          {
+  77   1          sec = Ds1302_Single_Byte_Read(0x81);
+  78   1          Ds1302_Single_Byte_Write(0x00,0x00);
+  79   1          second = ((sec&0x70)>>4)*10 + (sec&0x0f);
+  80   1          min = Ds1302_Single_Byte_Read(0x83);
+  81   1          Ds1302_Single_Byte_Write(0x00,0x00);
+  82   1          minute = ((min&0x70)>>4)*10 + (min&0x0f);
+  83   1          hr  = Ds1302_Single_Byte_Read(0x85);
+  84   1          Ds1302_Single_Byte_Write(0x00,0x00);
+  85   1          hour = ((hr&0x70)>>4)*10 + (hr&0x0f);
+  86   1      }
+  87          
+  88          void main()
+  89          {
+  90   1          ds1302_init();
+  91   1          buzzer_off();
+  92   1          while(1)
+  93   1          {
+  94   2              ds1302_rd();
+  95   2              dis = hour*1000000 + minute*1000 + second;
+  96   2              display(dis);
+  97   2          }
+  98   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    456    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     13       8
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

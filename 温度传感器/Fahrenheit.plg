@@ -1,0 +1,45 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+F:\蓝桥决赛\温度传感器\Fahrenheit.uvproj
+Project File Date:  05/22/2016
+
+<h2>Output:</h2>
+Rebuild target 'Target 1'
+compiling Fahrenheit.c...
+onewire.h(4): warning C318: can't open file 'STC15Fxxxx.h'
+compiling onewire.c...
+onewire.h(4): warning C318: can't open file 'STC15Fxxxx.h'
+ONEWIRE.H(11): error C202: 'P1': undefined identifier
+ONEWIRE.C(28): error C202: 'DQ': undefined identifier
+ONEWIRE.C(30): error C202: 'DQ': undefined identifier
+ONEWIRE.C(32): error C202: 'DQ': undefined identifier
+ONEWIRE.C(34): error C202: 'DQ': undefined identifier
+ONEWIRE.C(46): error C202: 'DQ': undefined identifier
+ONEWIRE.C(47): error C202: 'DQ': undefined identifier
+ONEWIRE.C(49): error C202: 'DQ': undefined identifier
+ONEWIRE.C(63): error C202: 'DQ': undefined identifier
+ONEWIRE.C(65): error C202: 'DQ': undefined identifier
+ONEWIRE.C(66): error C202: 'DQ': undefined identifier
+Target not created
+Rebuild target 'Target 1'
+compiling Fahrenheit.c...
+compiling onewire.c...
+linking...
+Program Size: data=23.1 xdata=0 code=1466
+"Fahrenheit" - 0 Error(s), 0 Warning(s).
+Rebuild target 'Target 1'
+compiling Fahrenheit.c...
+compiling onewire.c...
+linking...
+Program Size: data=23.1 xdata=0 code=1466
+creating hex file from "Fahrenheit"...
+"Fahrenheit" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling Fahrenheit.c...
+linking...
+Program Size: data=23.1 xdata=0 code=1473
+creating hex file from "Fahrenheit"...
+"Fahrenheit" - 0 Error(s), 0 Warning(s).

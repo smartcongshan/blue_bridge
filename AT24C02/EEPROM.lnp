@@ -1,0 +1,4 @@
+"EEPROM.obj",
+"iic.obj" 
+TO "EEPROM" 
+RAMSIZE(256) 

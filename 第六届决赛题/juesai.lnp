@@ -1,0 +1,5 @@
+"main.obj",
+"iic.obj",
+"core.obj" 
+TO "juesai" 
+RAMSIZE(256) 

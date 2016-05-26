@@ -1,0 +1,70 @@
+C51 COMPILER V9.01   LED                                                                   05/21/2016 11:01:18 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE LED
+OBJECT MODULE PLACED IN led.OBJ
+COMPILER INVOKED BY: F:\MKD\C51\BIN\C51.EXE led.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include "stc15f2k60s2.h"
+   2          
+   3          /* 延时函数 */
+   4          void delay(int a)
+   5          {
+   6   1        int x,y;
+   7   1        for(x = a;x > 0;x--)
+   8   1          for(y = 110;y > 0;y--);
+   9   1      }
+  10          /* 关闭蜂鸣器 */
+  11          void buzzer_off(void)
+  12          {
+  13   1          P2 &= 0x0;
+  14   1          P2  = 0xa0;
+  15   1          P0 &= 0X0;
+  16   1          P2 &= 0X1F;
+  17   1      }
+  18          /* 控制led函数 */
+  19          void led(int x)
+  20          {
+  21   1          int a;
+  22   1          P2 &= 0x0;
+  23   1          P2  = 0x80;
+  24   1          if(x == 0)
+  25   1            P0 = 0x00;
+  26   1          else
+  27   1          {
+  28   2            a   = 0xff & (0<<(x - 1));
+  29   2            P0 |= 0xff;
+  30   2            P0 = (~(1<<(x - 1)));  
+  31   2          }
+  32   1          P2 &= 0x1f;
+  33   1      }
+  34          
+  35          void main()
+  36          {
+  37   1          int x;
+  38   1          buzzer_off();
+  39   1          x = 1;
+  40   1          while(1)
+  41   1          {
+  42   2            led(x);
+  43   2            delay(100);
+  44   2          }
+  45   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    128    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+C51 COMPILER V9.01   LED                                                                   05/21/2016 11:01:18 PAGE 2   
+
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

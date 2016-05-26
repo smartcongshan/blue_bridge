@@ -1,0 +1,4 @@
+"AT24C02.obj",
+"iic.obj" 
+TO "AT24C02" 
+RAMSIZE(256) 

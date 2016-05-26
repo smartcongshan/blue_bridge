@@ -1,0 +1,115 @@
+C51 COMPILER V9.01   ADC                                                                   05/21/2016 20:27:38 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE ADC
+OBJECT MODULE PLACED IN adc.OBJ
+COMPILER INVOKED BY: F:\MKD\C51\BIN\C51.EXE adc.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include "stc15f2k60s2.h"
+   2          #include <stdio.h>
+   3          #include "iic.h"
+   4                        
+   5          #define FOSC  11059200
+   6          #define BUAD  115200
+   7          
+   8          int value;
+   9          
+  10          /* ???? */
+  11          void delay(int z)
+  12          {
+  13   1          int x,y;
+  14   1          for(x = z;x > 0;x--)
+  15   1            for(y = 110;y > 0;y--);
+  16   1      }
+  17          
+  18          /* ????? */
+  19          void buzzer_off(void)
+  20          {
+  21   1          P2 &= 0x0;
+  22   1          P2  = 0xa0;
+  23   1          P0 &= 0x0;
+  24   1          P2 &= 0x1f;
+  25   1      }
+  26          
+  27          /* ??????? */
+  28          void uart_init(void)
+  29          {
+  30   1          SCON = 0x50;
+  31   1          AUXR = 0x40;
+  32   1          TMOD = 0x00;
+  33   1          TL1  = (65536 - (FOSC/4/BUAD));
+  34   1          TH1  = (65536 - (FOSC/4/BUAD))>>8;
+  35   1          EA   = 1;
+  36   1          ES   = 1;
+  37   1          TR1  = 1;
+  38   1          TI   = 1;
+  39   1          //REN  = 1;
+  40   1      }
+  41          void PCF_8591_init(void)
+  42          {
+  43   1        IIC_Start();
+  44   1        IIC_SendByte(0x90);
+  45   1        IIC_WaitAck();
+  46   1        IIC_SendByte(0x03);
+  47   1        IIC_WaitAck();
+  48   1        IIC_Stop();
+  49   1        delay(10);
+  50   1      }
+  51          int PCF_8591_ad(void)
+  52          {
+  53   1        unsigned char ret;
+  54   1        IIC_Start();
+  55   1        IIC_SendByte(0x91);
+C51 COMPILER V9.01   ADC                                                                   05/21/2016 20:27:38 PAGE 2   
+
+  56   1        IIC_WaitAck();
+  57   1        ret = IIC_RecByte();
+  58   1        IIC_Ack(0);
+  59   1        IIC_Stop();
+  60   1        return (int)ret;
+  61   1      }
+  62          int main()
+  63          {
+  64   1            uart_init();
+  65   1        buzzer_off();
+  66   1      
+  67   1        PCF_8591_init();
+  68   1        while(1)
+  69   1        {
+  70   2            value = PCF_8591_ad();
+  71   2            printf("%d\n",value);
+  72   2            delay(100);
+  73   2        }
+  74   1        return 0;
+  75   1        
+  76   1      }
+  77          void uart1(void)interrupt 4
+  78          {
+  79   1        if(RI)
+  80   1        {
+  81   2          
+  82   2          RI = 0;
+  83   2          
+  84   2        }
+  85   1        if(TI)
+  86   1        {
+  87   2          //TI = 0;
+  88   2        
+  89   2        }
+  90   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    173    ----
+   CONSTANT SIZE    =      4    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

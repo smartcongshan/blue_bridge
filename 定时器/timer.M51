@@ -1,0 +1,229 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        05/21/2016  16:28:47  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+F:\MKD\C51\BIN\BL51.EXE timer.obj TO timer RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  timer.obj (TIMER)
+  F:\MKD\C51\LIB\C51S.LIB (?C_STARTUP)
+  F:\MKD\C51\LIB\C51S.LIB (?C?SIDIV)
+  F:\MKD\C51\LIB\C51S.LIB (?C_INIT)
+  F:\MKD\C51\LIB\C51S.LIB (?C?UIDIV)
+
+
+LINK MAP OF MODULE:  timer (TIMER)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0004H     UNIT         ?DT?TIMER
+            DATA    000CH     0004H     UNIT         _DATA_GROUP_
+            IDATA   0010H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0005H     UNIT         ?C_INITSEG
+                    0008H     0003H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     008CH     UNIT         ?C_C51STARTUP
+            CODE    009AH     008BH     UNIT         ?C?LIB_CODE
+            CODE    0125H     0042H     UNIT         ?PR?_DISPLAY?TIMER
+            CODE    0167H     0027H     UNIT         ?PR?TIME0?TIMER
+            CODE    018EH     0022H     UNIT         ?PR?_WEI?TIMER
+            CODE    01B0H     0020H     UNIT         ?PR?_DELAY?TIMER
+            CODE    01D0H     001BH     UNIT         ?PR?_DUAN?TIMER
+            CODE    01EBH     0013H     UNIT         ?PR?TIME0_INIT?TIMER
+            CODE    01FEH     000FH     UNIT         ?PR?MAIN?TIMER
+            CODE    020DH     000DH     UNIT         ?PR?BUZZER_OFF?TIMER
+            CODE    021AH     000AH     UNIT         ?CO?TIMER
+
+
+
+OVERLAY MAP OF MODULE:   timer (TIMER)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?TIMER
+  +--> ?C_INITSEG
+
+?PR?MAIN?TIMER                 000CH    0002H
+  +--> ?PR?BUZZER_OFF?TIMER
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2016  16:28:47  PAGE 2
+
+
+  +--> ?PR?TIME0_INIT?TIMER
+  +--> ?PR?_DISPLAY?TIMER
+
+?PR?_DISPLAY?TIMER             000EH    0002H
+  +--> ?PR?_WEI?TIMER
+  +--> ?PR?_DUAN?TIMER
+  +--> ?PR?_DELAY?TIMER
+
+?PR?_DUAN?TIMER                -----    -----
+  +--> ?CO?TIMER
+
+
+
+SYMBOL TABLE OF MODULE:  timer (TIMER)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        TIMER
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:00C0H         PUBLIC        P4
+  D:00C8H         PUBLIC        P5
+  B:00A8H.7       PUBLIC        EA
+  D:00E8H         PUBLIC        P6
+  D:00F8H         PUBLIC        P7
+  D:00A8H         PUBLIC        IE
+  C:01B0H         PUBLIC        _delay
+  D:00B8H         PUBLIC        IP
+  D:00D8H         PUBLIC        CCON
+  C:01FEH         PUBLIC        main
+  C:01D0H         PUBLIC        _duan
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:008EH         PUBLIC        AUXR
+  C:020DH         PUBLIC        buzzer_off
+  C:018EH         PUBLIC        _wei
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  C:021AH         PUBLIC        du
+  C:0167H         PUBLIC        time0
+  D:0008H         PUBLIC        i
+  D:000AH         PUBLIC        t
+  C:01EBH         PUBLIC        time0_init
+  C:0125H         PUBLIC        _display
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        z
+  -------         DO            
+  D:0006H         SYMBOL        x
+  D:0004H         SYMBOL        y
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2016  16:28:47  PAGE 3
+
+
+  -------         ENDDO         
+  C:01B0H         LINE#         11
+  C:01B0H         LINE#         12
+  C:01B0H         LINE#         14
+  C:01BBH         LINE#         15
+  C:01CFH         LINE#         16
+  -------         ENDPROC       _DELAY
+  -------         PROC          BUZZER_OFF
+  C:020DH         LINE#         18
+  C:020DH         LINE#         19
+  C:020DH         LINE#         20
+  C:0210H         LINE#         21
+  C:0213H         LINE#         22
+  C:0216H         LINE#         23
+  C:0219H         LINE#         24
+  -------         ENDPROC       BUZZER_OFF
+  -------         PROC          _DUAN
+  D:0006H         SYMBOL        x
+  C:01D0H         LINE#         26
+  C:01D0H         LINE#         27
+  C:01D0H         LINE#         28
+  C:01D3H         LINE#         29
+  C:01D6H         LINE#         30
+  C:01D9H         LINE#         31
+  C:01E7H         LINE#         32
+  C:01EAH         LINE#         33
+  -------         ENDPROC       _DUAN
+  -------         PROC          _WEI
+  D:0006H         SYMBOL        x
+  C:018EH         LINE#         35
+  C:018EH         LINE#         36
+  C:018EH         LINE#         37
+  C:0196H         LINE#         38
+  C:0199H         LINE#         39
+  C:019CH         LINE#         40
+  C:019FH         LINE#         41
+  C:01ACH         LINE#         42
+  C:01AFH         LINE#         43
+  -------         ENDPROC       _WEI
+  -------         PROC          _DISPLAY
+  D:000EH         SYMBOL        x
+  -------         DO            
+  D:0002H         SYMBOL        i
+  -------         ENDDO         
+  C:0125H         LINE#         45
+  C:0129H         LINE#         46
+  C:0129H         LINE#         48
+  C:012CH         LINE#         49
+  C:012CH         LINE#         50
+  C:0133H         LINE#         51
+  C:0145H         LINE#         52
+  C:014CH         LINE#         53
+  C:015BH         LINE#         54
+  C:0166H         LINE#         55
+  -------         ENDPROC       _DISPLAY
+  -------         PROC          TIME0_INIT
+  C:01EBH         LINE#         57
+BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2016  16:28:47  PAGE 4
+
+
+  C:01EBH         LINE#         58
+  C:01EBH         LINE#         59
+  C:01EEH         LINE#         60
+  C:01F1H         LINE#         61
+  C:01F4H         LINE#         62
+  C:01F7H         LINE#         63
+  C:01F9H         LINE#         64
+  C:01FBH         LINE#         65
+  C:01FDH         LINE#         66
+  -------         ENDPROC       TIME0_INIT
+  -------         PROC          MAIN
+  -------         DO            
+  D:000CH         SYMBOL        b
+  -------         ENDDO         
+  C:01FEH         LINE#         67
+  C:01FEH         LINE#         68
+  C:01FEH         LINE#         70
+  C:0201H         LINE#         71
+  C:0204H         LINE#         72
+  C:0204H         LINE#         73
+  C:0204H         LINE#         74
+  C:020BH         LINE#         75
+  -------         ENDPROC       MAIN
+  -------         PROC          TIME0
+  C:0167H         LINE#         77
+  C:016BH         LINE#         79
+  C:0173H         LINE#         80
+  C:017BH         LINE#         81
+  C:017BH         LINE#         82
+  C:0181H         LINE#         83
+  C:0189H         LINE#         84
+  C:0189H         LINE#         85
+  -------         ENDPROC       TIME0
+  -------         ENDMOD        TIMER
+
+  -------         MODULE        ?C?SIDIV
+  C:009AH         PUBLIC        ?C?SIDIV
+  -------         ENDMOD        ?C?SIDIV
+
+  -------         MODULE        ?C?UIDIV
+  C:00D0H         PUBLIC        ?C?UIDIV
+  -------         ENDMOD        ?C?UIDIV
+
+Program Size: data=17.0 xdata=0 code=545
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
